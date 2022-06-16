@@ -34,6 +34,39 @@ function send(e, php) {
     req.send(new FormData(e.target));
 }
 
+//Немного стилизации
+let formStyle = document.querySelectorAll('.input__style')
+
+for (let i = 0; i < formStyle.length; i++) {
+    const input = formStyle[i];
+
+    input.addEventListener('change', () => {
+        if (input.value !== '') {
+            input.classList.add('styled')
+        } else {
+            input.classList.remove('styled')
+        }
+    })
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const header = document.querySelector('.form__title')
+    const items = document.querySelectorAll('.form__item')
+    const submitBtn = document.querySelector('.form__btn')
+
+    header.classList.add('animate')
+    submitBtn.classList.add('animate')
+
+    for (let i = 0; i < items.length; i++) {
+        const element = items[i];
+        console.log(element);
+        element.classList.add('animate')
+    }
+
+})
+
+
+
 //Валидация формы
 
 const form = document.getElementById('form')

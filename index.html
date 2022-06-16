@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Document</title>
+    <title>SendMailForm</title>
 </head>
 
 <body>
@@ -15,19 +15,19 @@
             <form id="form" class="form__body" enctype="multipart/form-data" method="post"
                 onsubmit="send(event, 'send.php')">
                 <h1 class="form__title">Отправка данных на почту</h1>
-                <div class="form__item">
+                <div class="form__name form__item">
                     <label for="formName" class="form__label">Имя*:</label>
-                    <input id="formName" type="text" name="name" class="form__input _req">
+                    <input id="formName" type="text" name="name" class="form__input _req input__style">
                 </div>
-                <div class="form__item">
+                <div class="form__item form__email">
                     <label for="formEmail" class="form__label">Почта*:</label>
-                    <input id="formEmail" type="email" name="email" class="form__input _req _email">
+                    <input id="formEmail" type="email" name="email" class="form__input _req _email input__style">
                 </div>
-                <div class="form__item">
+                <div class="form__item form__message">
                     <label for="formMessage" class="form__label">Сообщение:</label>
-                    <textarea name="message" id="formMessage" class="form__input"></textarea>
+                    <textarea name="message" id="formMessage" class="form__input input__style"></textarea>
                 </div>
-                <div class="form__item">
+                <div class="form__item form__file">
                     <div class="form__label">Прикрепить фото</div>
                     <div class="file">
                         <div class="file__item">
@@ -39,7 +39,9 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="form__button">Отправить</button>
+                <div class="form__btn">
+                    <button type="submit" class="form__button">Отправить</button>
+                </div>
             </form>
         </div>
     </div>
