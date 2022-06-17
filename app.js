@@ -1,3 +1,5 @@
+"use strict"
+
 // Отправка данных на сервер
 function send(e, php) {
     e.preventDefault()
@@ -5,6 +7,7 @@ function send(e, php) {
 
     if (error === 0) {
         form.classList.add('_sending')
+        removeAnimation()
         var req = new XMLHttpRequest();
         req.open('POST', php, true);
         req.onload = function () {
@@ -16,14 +19,24 @@ function send(e, php) {
                     // Если сообщение отправлено
                     form.reset()
                     form.classList.remove('_sending')
-                    alert("Сообщение отправлено");
+                    animateItems()
+                    showPopupSuccess()
+                    // alert("Сообщение отправлено");
                 } else {
                     // Если произошла ошибка
                     form.classList.remove('_sending')
-                    alert("Ошибка. Сообщение не отправлено");
+                    animateItems()
+                    showPopupError()
+                    // alert("Ошибка. Сообщение не отправлено");
                 }
                 // Если не удалось связаться с php файлом
-            } else { alert("Ошибка сервера. Номер: " + req.status); }
+            } else {
+                form.classList.remove('_sending')
+                form.reset()
+                removeInputStyle()
+                showPopupError()
+                // alert("Ошибка сервера. Номер: " + req.status);
+            }
         };
     } else {
         alert('Заполните все поля со знаком *')
@@ -35,7 +48,59 @@ function send(e, php) {
 }
 
 //Немного стилизации
+
+//Всплывающее окно
+const popup = document.querySelector('#popup')
+const popupBody = document.querySelector('.popup__body')
+const popupCloseBtn = document.querySelector('.popup__close')
+const popupContent = document.querySelector('.popup__content')
+const popupTitle = document.querySelector('.popup__title')
+const success = 'Сообщение отправлено'
+const error = 'Ошибка. Сообщение не отправлено'
+
+
+popupCloseBtn.addEventListener('click', hidePopup)
+popupBody.addEventListener('click', (e) => {
+    e.stopPropagation()
+    if (e.target.classList == 'popup__body') {
+        hidePopup()
+    }
+})
+
+function showPopupSuccess() {
+    popup.classList.add('_show')
+    popupContent.classList.add('_show')
+    popupTitle.classList.add('_show')
+    popupCloseBtn.classList.add('_show')
+    popupTitle.innerText = success
+}
+
+function showPopupError() {
+    popup.classList.add('_show')
+    popupContent.classList.add('_show')
+    popupTitle.classList.add('_show')
+    popupCloseBtn.classList.add('_show')
+    popupTitle.innerText = error
+}
+
+function hidePopup() {
+    popup.classList.remove('_show')
+    popupContent.classList.remove('_show')
+    popupTitle.classList.remove('_show')
+    popupCloseBtn.classList.remove('_show')
+    animateItems()
+}
+
+
+//Стилизация инпутов
 const formStyle = document.querySelectorAll('.input__style')
+
+function removeInputStyle() {
+    for (let i = 0; i < formStyle.length; i++) {
+        const input = formStyle[i];
+        input.classList.remove('styled')
+    }
+}
 
 for (let i = 0; i < formStyle.length; i++) {
     const input = formStyle[i];
@@ -44,37 +109,38 @@ for (let i = 0; i < formStyle.length; i++) {
         if (input.value !== '') {
             input.classList.add('styled')
         } else {
-            input.classList.remove('styled')
+            removeInputStyle()
         }
     })
 }
 
-function animateItems() {
-    const header = document.querySelector('.form__title')
-    const items = document.querySelectorAll('.form__item')
-    const submitBtn = document.querySelector('.form__btn')
+// Анимация формы 
+const header = document.querySelector('.form__title')
+const items = document.querySelectorAll('.form__item')
+const submitBtn = document.querySelector('.form__btn')
 
+function removeAnimation() {
     header.classList.remove('animate')
     submitBtn.classList.remove('animate')
 
+    for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        item.classList.remove('animate')
+    }
+}
 
+function animateItems() {
     header.classList.add('animate')
     submitBtn.classList.add('animate')
 
     for (let i = 0; i < items.length; i++) {
         const item = items[i];
-        item.classList.remove('animate')
         item.classList.add('animate')
     }
 }
 
-// setTimeout(() => {
-//     animateItems()
-// }, 1000);
-
 
 //Валидация формы
-
 const form = document.getElementById('form')
 
 function formValidate(form) {
@@ -116,7 +182,6 @@ function emailTest(input) {
 
 
 //Работа с изображением
-
 const formImage = document.getElementById('formImage')
 const formPreview = document.getElementById('formPreview')
 
