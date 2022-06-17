@@ -12,34 +12,31 @@ function send(e, php) {
         req.open('POST', php, true);
         req.onload = function () {
             if (req.status >= 200 && req.status < 400) {
-                json = JSON.parse(this.response); // internet explorer 11
+                let json = JSON.parse(this.response); // internet explorer 11
                 console.log(json);
 
                 if (json.result == "success") {
                     // Если сообщение отправлено
                     form.reset()
                     form.classList.remove('_sending')
-                    animateItems()
-                    showPopupSuccess()
-                    // alert("Сообщение отправлено");
+                    removeInputStyle()
+                    showPopupMessage(success)
                 } else {
                     // Если произошла ошибка
                     form.classList.remove('_sending')
-                    animateItems()
-                    showPopupError()
-                    // alert("Ошибка. Сообщение не отправлено");
+                    removeInputStyle()
+                    showPopupMessage(crash)
                 }
                 // Если не удалось связаться с php файлом
             } else {
                 form.classList.remove('_sending')
                 form.reset()
                 removeInputStyle()
-                showPopupError()
-                // alert("Ошибка сервера. Номер: " + req.status);
+                showPopupMessage(crash)
             }
         };
     } else {
-        alert('Заполните все поля со знаком *')
+        popupTitle.innerText = validationAlert
     }
 
     // Если не удалось отправить запрос. Стоит блок на хостинге
@@ -56,7 +53,8 @@ const popupCloseBtn = document.querySelector('.popup__close')
 const popupContent = document.querySelector('.popup__content')
 const popupTitle = document.querySelector('.popup__title')
 const success = 'Сообщение отправлено'
-const error = 'Ошибка. Сообщение не отправлено'
+const crash = 'Ошибка. Сообщение не отправлено'
+const validationAlert = 'Заполните пожалуйста все поля со знаком *'
 
 
 popupCloseBtn.addEventListener('click', hidePopup)
@@ -67,21 +65,14 @@ popupBody.addEventListener('click', (e) => {
     }
 })
 
-function showPopupSuccess() {
+function showPopupMessage(message) {
     popup.classList.add('_show')
     popupContent.classList.add('_show')
     popupTitle.classList.add('_show')
     popupCloseBtn.classList.add('_show')
-    popupTitle.innerText = success
+    popupTitle.innerText = message
 }
 
-function showPopupError() {
-    popup.classList.add('_show')
-    popupContent.classList.add('_show')
-    popupTitle.classList.add('_show')
-    popupCloseBtn.classList.add('_show')
-    popupTitle.innerText = error
-}
 
 function hidePopup() {
     popup.classList.remove('_show')
