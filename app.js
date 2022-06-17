@@ -35,7 +35,7 @@ function send(e, php) {
 }
 
 //Немного стилизации
-let formStyle = document.querySelectorAll('.input__style')
+const formStyle = document.querySelectorAll('.input__style')
 
 for (let i = 0; i < formStyle.length; i++) {
     const input = formStyle[i];
@@ -49,22 +49,28 @@ for (let i = 0; i < formStyle.length; i++) {
     })
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+function animateItems() {
     const header = document.querySelector('.form__title')
     const items = document.querySelectorAll('.form__item')
     const submitBtn = document.querySelector('.form__btn')
+
+    header.classList.remove('animate')
+    submitBtn.classList.remove('animate')
+
 
     header.classList.add('animate')
     submitBtn.classList.add('animate')
 
     for (let i = 0; i < items.length; i++) {
-        const element = items[i];
-        console.log(element);
-        element.classList.add('animate')
+        const item = items[i];
+        item.classList.remove('animate')
+        item.classList.add('animate')
     }
+}
 
-})
-
+// setTimeout(() => {
+//     animateItems()
+// }, 1000);
 
 
 //Валидация формы
